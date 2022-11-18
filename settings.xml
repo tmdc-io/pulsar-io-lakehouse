@@ -1,0 +1,9 @@
+<settings>
+  <servers>
+    <server>
+      <id>dataos.releases</id>
+      <username></username>
+      <password></password>
+    </server>
+  </servers>
+</settings>

@@ -37,6 +37,7 @@
   <description>It is a lakehouse connector streaming convert data between lakehouse and Apache Pulsar.</description>
 
   <properties>
+    <dataos.releases.repo>https://mymavenrepo.com/repo/1SYCUKwoIEm7SCxJ4is0/</dataos.releases.repo>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
     <java.version>17</java.version>
@@ -454,7 +455,6 @@
     </dependency>
 
   </dependencies>
-
   <profiles>
     <profile>
       <id>cloud</id>
@@ -492,7 +492,6 @@
       </dependencies>
     </profile>
   </profiles>
-
   <build>
     <finalName>${project.artifactId}-${project.version}${cloudPkgSuffix}</finalName>
     <pluginManagement>
@@ -664,5 +663,22 @@
       </plugin>
     </plugins>
   </build>
-
+  <repositories>
+    <repository>
+      <id>central</id>
+      <layout>default</layout>
+      <url>https://repo1.maven.org/maven2</url>
+    </repository>
+    <repository>
+      <id>dataos.releases</id>
+      <name>DataOS Releases</name>
+      <url>${dataos.releases.repo}</url>
+    </repository>
+  </repositories>
+  <distributionManagement>
+    <repository>
+      <id>dataos.releases</id>
+      <url>${dataos.releases.repo}</url>
+    </repository>
+  </distributionManagement>
 </project>

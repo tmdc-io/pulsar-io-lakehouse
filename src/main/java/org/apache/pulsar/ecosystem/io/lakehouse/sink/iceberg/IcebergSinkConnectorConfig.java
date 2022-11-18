@@ -97,7 +97,8 @@ public class IcebergSinkConnectorConfig extends SinkConnectorConfig {
         String formatString = "";
         if (tableProperties != null) {
             parquetBatchSizeInBytes = Integer.parseInt(tableProperties.getOrDefault(
-                TableProperties.PARQUET_ROW_GROUP_SIZE_BYTES, String.valueOf(TableProperties.PARQUET_ROW_GROUP_SIZE_BYTES_DEFAULT)));
+                TableProperties.PARQUET_ROW_GROUP_SIZE_BYTES,
+                    String.valueOf(TableProperties.PARQUET_ROW_GROUP_SIZE_BYTES_DEFAULT)));
             formatString = tableProperties.getOrDefault(TableProperties.DEFAULT_FILE_FORMAT,
                 TableProperties.DEFAULT_FILE_FORMAT_DEFAULT);
         } else {
