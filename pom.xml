@@ -22,663 +22,664 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-<!--  <parent>-->
-<!--    <groupId>org.apache</groupId>-->
-<!--    <artifactId>apache</artifactId>-->
-<!--    <version>18</version>-->
-<!--  </parent>-->
+    <!--  <parent>-->
+    <!--    <groupId>org.apache</groupId>-->
+    <!--    <artifactId>apache</artifactId>-->
+    <!--    <version>18</version>-->
+    <!--  </parent>-->
 
-  <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.apache.pulsar.ecosystem</groupId>
-  <artifactId>pulsar-io-lakehouse</artifactId>
-  <version>2.11.0-dataos.1</version>
-  <name>Pulsar Ecosystem :: IO Connector :: Lake House</name>
-  <description>It is a lakehouse connector streaming convert data between lakehouse and Apache Pulsar.</description>
+    <groupId>org.apache.pulsar.ecosystem</groupId>
+    <artifactId>pulsar-io-lakehouse</artifactId>
+    <version>2.11.0-dataos.1</version>
+    <name>Pulsar Ecosystem :: IO Connector :: Lake House</name>
+    <description>It is a lakehouse connector streaming convert data between lakehouse and Apache Pulsar.</description>
+    <packaging>jar</packaging>
+    <properties>
+        <dataos.releases.repo>https://mymavenrepo.com/repo/1SYCUKwoIEm7SCxJ4is0/</dataos.releases.repo>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <java.version>17</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <redirectTestOutputToFile>true</redirectTestOutputToFile>
+        <spotbugs-annotations.version>4.2.2</spotbugs-annotations.version>
+        <testRetryCount>0</testRetryCount>
 
-  <properties>
-    <dataos.releases.repo>https://mymavenrepo.com/repo/1SYCUKwoIEm7SCxJ4is0/</dataos.releases.repo>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
-    <java.version>17</java.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <redirectTestOutputToFile>true</redirectTestOutputToFile>
-    <spotbugs-annotations.version>4.2.2</spotbugs-annotations.version>
-    <testRetryCount>0</testRetryCount>
+        <!-- connector dependencies -->
+        <jackson.version>2.13.2.1</jackson.version>
+        <lombok.version>1.18.22</lombok.version>
+        <pulsar.version>2.10.0.4</pulsar.version>
+        <log4j2.version>2.17.2</log4j2.version>
+        <slf4j.version>1.7.25</slf4j.version>
+        <hadoop.version>3.2.2</hadoop.version>
+        <iceberg.version>0.14.1</iceberg.version>
+        <parquet.version>1.12.0</parquet.version>
+        <hudi.version>0.11.0</hudi.version>
+        <delta.version>0.3.0</delta.version>
+        <parquet.avro.version>1.12.2</parquet.avro.version>
+        <netty.version>4.1.77.Final</netty.version>
+        <aws.sdk.version>1.12.220</aws.sdk.version>
+        <gcs.version>hadoop3-2.2.1</gcs.version>
+        <curator.version>2.12.0</curator.version>
 
-    <!-- connector dependencies -->
-    <jackson.version>2.13.2.1</jackson.version>
-    <lombok.version>1.18.22</lombok.version>
-    <pulsar.version>2.10.0.4</pulsar.version>
-    <log4j2.version>2.17.2</log4j2.version>
-    <slf4j.version>1.7.25</slf4j.version>
-    <hadoop.version>3.2.2</hadoop.version>
-    <iceberg.version>0.14.1</iceberg.version>
-    <parquet.version>1.12.0</parquet.version>
-    <hudi.version>0.11.0</hudi.version>
-    <delta.version>0.3.0</delta.version>
-    <parquet.avro.version>1.12.2</parquet.avro.version>
-    <netty.version>4.1.77.Final</netty.version>
-    <aws.sdk.version>1.12.220</aws.sdk.version>
-    <gcs.version>hadoop3-2.2.1</gcs.version>
-    <curator.version>2.12.0</curator.version>
+        <!-- test dependencies -->
+        <testng.version>7.3.0</testng.version>
+        <awaitility.version>4.0.3</awaitility.version>
+        <mockito.version>3.12.4</mockito.version>
 
-    <!-- test dependencies -->
-    <testng.version>7.3.0</testng.version>
-    <awaitility.version>4.0.3</awaitility.version>
-    <mockito.version>3.12.4</mockito.version>
+        <!-- build plugin dependencies -->
+        <license.plugin.version>3.0</license.plugin.version>
+        <maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
+        <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
+        <surefire.version>3.0.0-M3</surefire.version>
+        <nifi.nar.plugin.version>1.2.0</nifi.nar.plugin.version>
+        <puppycrawl.checkstyle.version>8.37</puppycrawl.checkstyle.version>
+        <spotbugs-maven-plugin.version>4.2.2</spotbugs-maven-plugin.version>
+        <cloudPkgSuffix></cloudPkgSuffix>
+    </properties>
 
-    <!-- build plugin dependencies -->
-    <license.plugin.version>3.0</license.plugin.version>
-    <maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
-    <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
-    <surefire.version>3.0.0-M3</surefire.version>
-    <nifi.nar.plugin.version>1.2.0</nifi.nar.plugin.version>
-    <puppycrawl.checkstyle.version>8.37</puppycrawl.checkstyle.version>
-    <spotbugs-maven-plugin.version>4.2.2</spotbugs-maven-plugin.version>
-    <cloudPkgSuffix></cloudPkgSuffix>
-  </properties>
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
-  <licenses>
-    <license>
-      <name>Apache License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
+    <!-- keep all the dependencies used by all modules here -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.streamnative</groupId>
+                <artifactId>pulsar-io-core</artifactId>
+                <version>${pulsar.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-annotations</artifactId>
+                <version>${spotbugs-annotations.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.streamnative</groupId>
+                <artifactId>pulsar-client-original</artifactId>
+                <version>${pulsar.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.hadoop</groupId>
+                <artifactId>hadoop-client</artifactId>
+                <version>${hadoop.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-common</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
 
-  <!-- keep all the dependencies used by all modules here -->
-  <dependencyManagement>
+            <!-- iceberg dependency -->
+            <dependency>
+                <groupId>org.apache.iceberg</groupId>
+                <artifactId>iceberg-api</artifactId>
+                <version>${iceberg.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.iceberg</groupId>
+                <artifactId>iceberg-core</artifactId>
+                <version>${iceberg.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.iceberg</groupId>
+                <artifactId>iceberg-parquet</artifactId>
+                <version>${iceberg.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.iceberg</groupId>
+                <artifactId>iceberg-common</artifactId>
+                <version>${iceberg.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.iceberg</groupId>
+                <artifactId>iceberg-data</artifactId>
+                <version>${iceberg.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.iceberg</groupId>
+                <artifactId>iceberg-hive-metastore</artifactId>
+                <version>${iceberg.version}</version>
+            </dependency>
+
+            <!-- delta lake dependency -->
+            <dependency>
+                <groupId>org.apache.parquet</groupId>
+                <artifactId>parquet-avro</artifactId>
+                <version>${parquet.avro.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.delta</groupId>
+                <artifactId>delta-standalone_2.12</artifactId>
+                <version>${delta.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.parquet</groupId>
+                <artifactId>parquet-column</artifactId>
+                <version>${parquet.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.parquet</groupId>
+                <artifactId>parquet-hadoop</artifactId>
+                <version>${parquet.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-slf4j-impl</artifactId>
+                <version>${log4j2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>${log4j2.version}</version>
+            </dependency>
+
+            <!--  Hoodie dependencies begin   -->
+            <dependency>
+                <groupId>org.apache.hudi</groupId>
+                <artifactId>hudi-java-client</artifactId>
+                <version>${hudi.version}</version>
+            </dependency>
+            <!--  Hoodie dependencies end    -->
+
+            <!-- Cloud dependencies begin -->
+            <dependency>
+                <groupId>org.apache.hadoop</groupId>
+                <artifactId>hadoop-aws</artifactId>
+                <version>${hadoop.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.amazonaws</groupId>
+                        <artifactId>aws-java-sdk-bundle</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>com.amazonaws</groupId>
+                <artifactId>aws-java-sdk-bundle</artifactId>
+                <version>${aws.sdk.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.cloud.bigdataoss</groupId>
+                <artifactId>gcs-connector</artifactId>
+                <version>${gcs.version}</version>
+                <classifier>shaded</classifier>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.hadoop</groupId>
+                <artifactId>hadoop-azure</artifactId>
+                <version>${hadoop.version}</version>
+            </dependency>
+
+            <!-- Cloud dependencies end -->
+
+
+            <!-- test dependencies -->
+            <dependency>
+                <groupId>org.testng</groupId>
+                <artifactId>testng</artifactId>
+                <version>${testng.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.yaml</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.awaitility</groupId>
+                <artifactId>awaitility</artifactId>
+                <version>${awaitility.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <!-- include the dependencies -->
     <dependencies>
-      <dependency>
-        <groupId>io.streamnative</groupId>
-        <artifactId>pulsar-io-core</artifactId>
-        <version>${pulsar.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-databind</artifactId>
-        <version>${jackson.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.projectlombok</groupId>
-        <artifactId>lombok</artifactId>
-        <version>${lombok.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.github.spotbugs</groupId>
-        <artifactId>spotbugs-annotations</artifactId>
-        <version>${spotbugs-annotations.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.streamnative</groupId>
-        <artifactId>pulsar-client-original</artifactId>
-        <version>${pulsar.version}</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.hadoop</groupId>
-        <artifactId>hadoop-client</artifactId>
-        <version>${hadoop.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.netty</groupId>
-        <artifactId>netty-common</artifactId>
-        <version>${netty.version}</version>
-      </dependency>
 
-      <!-- iceberg dependency -->
-      <dependency>
-        <groupId>org.apache.iceberg</groupId>
-        <artifactId>iceberg-api</artifactId>
-        <version>${iceberg.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.iceberg</groupId>
-        <artifactId>iceberg-core</artifactId>
-        <version>${iceberg.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.iceberg</groupId>
-        <artifactId>iceberg-parquet</artifactId>
-        <version>${iceberg.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.iceberg</groupId>
-        <artifactId>iceberg-common</artifactId>
-        <version>${iceberg.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.iceberg</groupId>
-        <artifactId>iceberg-data</artifactId>
-        <version>${iceberg.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.iceberg</groupId>
-        <artifactId>iceberg-hive-metastore</artifactId>
-        <version>${iceberg.version}</version>
-      </dependency>
+        <!-- provided dependencies (available at compilation and test classpaths and *NOT* packaged) -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs-annotations</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
-      <!-- delta lake dependency -->
-      <dependency>
-        <groupId>org.apache.parquet</groupId>
-        <artifactId>parquet-avro</artifactId>
-        <version>${parquet.avro.version}</version>
-      </dependency>
+        <!-- runtime dependencies -->
+        <dependency>
+            <groupId>io.streamnative</groupId>
+            <artifactId>pulsar-io-core</artifactId>
+        </dependency>
 
-      <dependency>
-        <groupId>io.delta</groupId>
-        <artifactId>delta-standalone_2.12</artifactId>
-        <version>${delta.version}</version>
-      </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.streamnative</groupId>
+            <artifactId>pulsar-client-original</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-client</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>commons-logging</artifactId>
+                    <groupId>commons-logging</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>log4j</artifactId>
+                    <groupId>log4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.hadoop</groupId>
+                    <artifactId>hadoop-yarn-*</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.hadoop</groupId>
+                    <artifactId>hadoop-mapreduce-*</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.jersey</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 
-      <dependency>
-        <groupId>org.apache.parquet</groupId>
-        <artifactId>parquet-column</artifactId>
-        <version>${parquet.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.parquet</groupId>
-        <artifactId>parquet-hadoop</artifactId>
-        <version>${parquet.version}</version>
-      </dependency>
+        <dependency>
+            <groupId>org.apache.iceberg</groupId>
+            <artifactId>iceberg-api</artifactId>
+        </dependency>
 
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-api</artifactId>
-        <version>${slf4j.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-simple</artifactId>
-        <version>${slf4j.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.logging.log4j</groupId>
-        <artifactId>log4j-slf4j-impl</artifactId>
-        <version>${log4j2.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.logging.log4j</groupId>
-        <artifactId>log4j-core</artifactId>
-        <version>${log4j2.version}</version>
-      </dependency>
+        <dependency>
+            <groupId>org.apache.iceberg</groupId>
+            <artifactId>iceberg-core</artifactId>
+        </dependency>
 
-      <!--  Hoodie dependencies begin   -->
-      <dependency>
-        <groupId>org.apache.hudi</groupId>
-        <artifactId>hudi-java-client</artifactId>
-        <version>${hudi.version}</version>
-      </dependency>
-      <!--  Hoodie dependencies end    -->
+        <dependency>
+            <groupId>org.apache.iceberg</groupId>
+            <artifactId>iceberg-parquet</artifactId>
+        </dependency>
 
-      <!-- Cloud dependencies begin -->
-      <dependency>
-        <groupId>org.apache.hadoop</groupId>
-        <artifactId>hadoop-aws</artifactId>
-        <version>${hadoop.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk-bundle</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>com.amazonaws</groupId>
-        <artifactId>aws-java-sdk-bundle</artifactId>
-        <version>${aws.sdk.version}</version>
-      </dependency>
+        <dependency>
+            <groupId>org.apache.iceberg</groupId>
+            <artifactId>iceberg-common</artifactId>
+        </dependency>
 
-      <dependency>
-        <groupId>com.google.cloud.bigdataoss</groupId>
-        <artifactId>gcs-connector</artifactId>
-        <version>${gcs.version}</version>
-        <classifier>shaded</classifier>
-      </dependency>
+        <dependency>
+            <groupId>org.apache.iceberg</groupId>
+            <artifactId>iceberg-data</artifactId>
+        </dependency>
 
-      <dependency>
-        <groupId>org.apache.hadoop</groupId>
-        <artifactId>hadoop-azure</artifactId>
-        <version>${hadoop.version}</version>
-      </dependency>
+        <dependency>
+            <groupId>org.apache.iceberg</groupId>
+            <artifactId>iceberg-hive-metastore</artifactId>
+        </dependency>
 
-      <!-- Cloud dependencies end -->
+        <dependency>
+            <groupId>io.delta</groupId>
+            <artifactId>delta-standalone_2.12</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.parquet</groupId>
+            <artifactId>parquet-avro</artifactId>
+        </dependency>
 
+        <dependency>
+            <groupId>org.apache.parquet</groupId>
+            <artifactId>parquet-column</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.parquet</groupId>
+            <artifactId>parquet-hadoop</artifactId>
+        </dependency>
 
-      <!-- test dependencies -->
-      <dependency>
-        <groupId>org.testng</groupId>
-        <artifactId>testng</artifactId>
-        <version>${testng.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.yaml</groupId>
-            <artifactId>*</artifactId>
-          </exclusion>
-        </exclusions>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.awaitility</groupId>
-        <artifactId>awaitility</artifactId>
-        <version>${awaitility.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.mockito</groupId>
-        <artifactId>mockito-core</artifactId>
-        <version>${mockito.version}</version>
-        <scope>test</scope>
-      </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-common</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.hudi</groupId>
+            <artifactId>hudi-java-client</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.prometheus</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.curator</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.dropwizard.metrics</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-framework</artifactId>
+            <version>${curator.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.hudi</groupId>
+            <artifactId>hudi-client-common</artifactId>
+            <version>${hudi.version}</version>
+            <scope>test</scope>
+            <classifier>tests</classifier>
+        </dependency>
+
+        <!-- test dependencies -->
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
-  </dependencyManagement>
+    <profiles>
+        <profile>
+            <id>cloud</id>
+            <properties>
+                <cloudPkgSuffix>-cloud</cloudPkgSuffix>
+            </properties>
+            <dependencies>
+                <!-- Cloud dependencies begin -->
+                <dependency>
+                    <groupId>org.apache.hadoop</groupId>
+                    <artifactId>hadoop-aws</artifactId>
+                    <version>${hadoop.version}</version>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>com.amazonaws</groupId>
+                            <artifactId>aws-java-sdk-bundle</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+                <dependency>
+                    <groupId>com.amazonaws</groupId>
+                    <artifactId>aws-java-sdk-bundle</artifactId>
+                </dependency>
 
-  <!-- include the dependencies -->
-  <dependencies>
+                <dependency>
+                    <groupId>com.google.cloud.bigdataoss</groupId>
+                    <artifactId>gcs-connector</artifactId>
+                    <classifier>shaded</classifier>
+                </dependency>
 
-    <!-- provided dependencies (available at compilation and test classpaths and *NOT* packaged) -->
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.github.spotbugs</groupId>
-      <artifactId>spotbugs-annotations</artifactId>
-      <scope>provided</scope>
-    </dependency>
+                <dependency>
+                    <groupId>org.apache.hadoop</groupId>
+                    <artifactId>hadoop-azure</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+    <build>
+        <finalName>${project.artifactId}-${project.version}${cloudPkgSuffix}</finalName>
+        <pluginManagement>
+            <plugins>
+                <!-- compile -->
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                    <configuration>
+                        <encoding>UTF-8</encoding>
+                        <compilerArgs>
+                            <compilerArg>-Xlint:deprecation</compilerArg>
+                            <compilerArg>-Xlint:unchecked</compilerArg>
+                            <!-- https://issues.apache.org/jira/browse/MCOMPILER-205 -->
+                            <compilerArg>-Xpkginfo:always</compilerArg>
+                        </compilerArgs>
+                    </configuration>
+                </plugin>
+                <!-- test -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <configuration>
+                        <redirectTestOutputToFile>${redirectTestOutputToFile}</redirectTestOutputToFile>
+                        <reuseForks>false</reuseForks>
+                        <forkedProcessTimeoutInSeconds>1800</forkedProcessTimeoutInSeconds>
+                        <rerunFailingTestsCount>${testRetryCount}</rerunFailingTestsCount>
+                        <argLine>
+                            --add-opens java.base/java.util=ALL-UNNAMED
+                            --add-opens java.base/java.lang=ALL-UNNAMED
+                            --add-opens java.base/java.util.concurrent=ALL-UNNAMED
+                            --add-opens java.base/java.nio=ALL-UNNAMED
+                        </argLine>
+                    </configuration>
+                </plugin>
+                <!-- package -->
+<!--                <plugin>-->
+<!--                    <groupId>org.apache.nifi</groupId>-->
+<!--                    <artifactId>nifi-nar-maven-plugin</artifactId>-->
+<!--                    <version>${nifi.nar.plugin.version}</version>-->
+<!--                    <extensions>true</extensions>-->
+<!--                    <configuration>-->
+<!--                        <finalName>${project.artifactId}-${project.version}${cloudPkgSuffix}</finalName>-->
+<!--                    </configuration>-->
+<!--                    <executions>-->
+<!--                        <execution>-->
+<!--                            <id>default-nar</id>-->
+<!--                            <phase>package</phase>-->
+<!--                            <goals>-->
+<!--                                <goal>nar</goal>-->
+<!--                            </goals>-->
+<!--                        </execution>-->
+<!--                    </executions>-->
+<!--                </plugin>-->
+                <!-- license -->
+                <plugin>
+                    <groupId>com.mycila</groupId>
+                    <artifactId>license-maven-plugin</artifactId>
+                    <version>${license.plugin.version}</version>
+                    <configuration>
+                        <header>src/license/ALv2/header.txt</header>
+                        <excludes>
+                            <exclude>LICENSE</exclude>
+                            <exclude>NOTICE</exclude>
+                            <exclude>**/*.xml</exclude>
+                            <exclude>.github/CODEOWNERS</exclude>
+                            <exclude>{project.basedir}/src/test/java/resources/external/*</exclude>
+                            <exclude>.github/workflows/*.yml</exclude>
+                            <exclude>data/**</exclude>
+                        </excludes>
+                        <mapping>
+                            <proto>JAVADOC_STYLE</proto>
+                            <conf>SCRIPT_STYLE</conf>
+                            <ini>SCRIPT_STYLE</ini>
+                            <yaml>SCRIPT_STYLE</yaml>
+                            <cfg>SCRIPT_STYLE</cfg>
+                            <md>XML_STYLE</md>
+                            <txt>SCRIPT_STYLE</txt>
+                        </mapping>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>check-license-header</id>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                            <phase>process-sources</phase>
+                        </execution>
+                    </executions>
+                </plugin>
+                <!-- checkstyle -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>${maven-checkstyle-plugin.version}</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.puppycrawl.tools</groupId>
+                            <artifactId>checkstyle</artifactId>
+                            <version>${puppycrawl.checkstyle.version}</version>
+                        </dependency>
+                    </dependencies>
+                    <configuration>
+                        <configLocation>src/checkstyle/checkstyle.xml</configLocation>
+                        <suppressionsLocation>src/checkstyle/suppressions.xml</suppressionsLocation>
+                        <encoding>UTF-8</encoding>
+                        <consoleOutput>true</consoleOutput>
+                        <failOnViolation>true</failOnViolation>
+                        <includeResources>false</includeResources>
+                        <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>checkstyle</id>
+                            <phase>validate</phase>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <!-- spotbugs -->
+                <plugin>
+                    <groupId>com.github.spotbugs</groupId>
+                    <artifactId>spotbugs-maven-plugin</artifactId>
+                    <version>${spotbugs-maven-plugin.version}</version>
+                    <configuration>
+                        <excludeFilterFile>${session.executionRootDirectory}/src/spotbugs/findbugsExclude.xml
+                        </excludeFilterFile>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
 
-    <!-- runtime dependencies -->
-    <dependency>
-      <groupId>io.streamnative</groupId>
-      <artifactId>pulsar-io-core</artifactId>
-    </dependency>
+        <plugins>
+            <!-- compile -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
 
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.streamnative</groupId>
-      <artifactId>pulsar-client-original</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.hadoop</groupId>
-      <artifactId>hadoop-client</artifactId>
-      <exclusions>
-        <exclusion>
-          <artifactId>commons-logging</artifactId>
-          <groupId>commons-logging</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>log4j</artifactId>
-          <groupId>log4j</groupId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.hadoop</groupId>
-          <artifactId>hadoop-yarn-*</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.hadoop</groupId>
-          <artifactId>hadoop-mapreduce-*</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>com.sun.jersey</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
+            <!-- test -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
 
-    <dependency>
-      <groupId>org.apache.iceberg</groupId>
-      <artifactId>iceberg-api</artifactId>
-    </dependency>
+            <!-- package -->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.nifi</groupId>-->
+<!--                <artifactId>nifi-nar-maven-plugin</artifactId>-->
+<!--            </plugin>-->
 
-    <dependency>
-      <groupId>org.apache.iceberg</groupId>
-      <artifactId>iceberg-core</artifactId>
-    </dependency>
+            <!-- license -->
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+            </plugin>
 
-    <dependency>
-      <groupId>org.apache.iceberg</groupId>
-      <artifactId>iceberg-parquet</artifactId>
-    </dependency>
+            <!-- checkstyle -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+            </plugin>
 
-    <dependency>
-      <groupId>org.apache.iceberg</groupId>
-      <artifactId>iceberg-common</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.iceberg</groupId>
-      <artifactId>iceberg-data</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.iceberg</groupId>
-      <artifactId>iceberg-hive-metastore</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>io.delta</groupId>
-      <artifactId>delta-standalone_2.12</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.parquet</groupId>
-      <artifactId>parquet-avro</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.parquet</groupId>
-      <artifactId>parquet-column</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.parquet</groupId>
-      <artifactId>parquet-hadoop</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-slf4j-impl</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-core</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-common</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.hudi</groupId>
-      <artifactId>hudi-java-client</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>io.prometheus</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.curator</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>io.dropwizard.metrics</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.curator</groupId>
-      <artifactId>curator-framework</artifactId>
-      <version>${curator.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.hudi</groupId>
-      <artifactId>hudi-client-common</artifactId>
-      <version>${hudi.version}</version>
-      <scope>test</scope>
-      <classifier>tests</classifier>
-    </dependency>
-
-    <!-- test dependencies -->
-    <dependency>
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.awaitility</groupId>
-      <artifactId>awaitility</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-  </dependencies>
-  <profiles>
-    <profile>
-      <id>cloud</id>
-      <properties>
-        <cloudPkgSuffix>-cloud</cloudPkgSuffix>
-      </properties>
-      <dependencies>
-        <!-- Cloud dependencies begin -->
-        <dependency>
-          <groupId>org.apache.hadoop</groupId>
-          <artifactId>hadoop-aws</artifactId>
-          <version>${hadoop.version}</version>
-          <exclusions>
-            <exclusion>
-              <groupId>com.amazonaws</groupId>
-              <artifactId>aws-java-sdk-bundle</artifactId>
-            </exclusion>
-          </exclusions>
-        </dependency>
-        <dependency>
-          <groupId>com.amazonaws</groupId>
-          <artifactId>aws-java-sdk-bundle</artifactId>
-        </dependency>
-
-        <dependency>
-          <groupId>com.google.cloud.bigdataoss</groupId>
-          <artifactId>gcs-connector</artifactId>
-          <classifier>shaded</classifier>
-        </dependency>
-
-        <dependency>
-          <groupId>org.apache.hadoop</groupId>
-          <artifactId>hadoop-azure</artifactId>
-        </dependency>
-      </dependencies>
-    </profile>
-  </profiles>
-  <build>
-    <finalName>${project.artifactId}-${project.version}${cloudPkgSuffix}</finalName>
-    <pluginManagement>
-      <plugins>
-        <!-- compile -->
-        <plugin>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>${maven-compiler-plugin.version}</version>
-          <configuration>
-            <encoding>UTF-8</encoding>
-            <compilerArgs>
-              <compilerArg>-Xlint:deprecation</compilerArg>
-              <compilerArg>-Xlint:unchecked</compilerArg>
-              <!-- https://issues.apache.org/jira/browse/MCOMPILER-205 -->
-              <compilerArg>-Xpkginfo:always</compilerArg>
-	        </compilerArgs>
-          </configuration>
-        </plugin>
-        <!-- test -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <configuration>
-            <redirectTestOutputToFile>${redirectTestOutputToFile}</redirectTestOutputToFile>
-            <reuseForks>false</reuseForks>
-            <forkedProcessTimeoutInSeconds>1800</forkedProcessTimeoutInSeconds>
-            <rerunFailingTestsCount>${testRetryCount}</rerunFailingTestsCount>
-            <argLine>
-              --add-opens java.base/java.util=ALL-UNNAMED
-              --add-opens java.base/java.lang=ALL-UNNAMED
-              --add-opens java.base/java.util.concurrent=ALL-UNNAMED
-              --add-opens java.base/java.nio=ALL-UNNAMED
-            </argLine>
-          </configuration>
-        </plugin>
-        <!-- package -->
-        <plugin>
-          <groupId>org.apache.nifi</groupId>
-          <artifactId>nifi-nar-maven-plugin</artifactId>
-          <version>${nifi.nar.plugin.version}</version>
-          <extensions>true</extensions>
-          <configuration>
-            <finalName>${project.artifactId}-${project.version}${cloudPkgSuffix}</finalName>
-          </configuration>
-          <executions>
-            <execution>
-              <id>default-nar</id>
-              <phase>package</phase>
-              <goals>
-                <goal>nar</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-        <!-- license -->
-        <plugin>
-          <groupId>com.mycila</groupId>
-          <artifactId>license-maven-plugin</artifactId>
-          <version>${license.plugin.version}</version>
-          <configuration>
-            <header>src/license/ALv2/header.txt</header>
-            <excludes>
-              <exclude>LICENSE</exclude>
-              <exclude>NOTICE</exclude>
-              <exclude>**/*.xml</exclude>
-              <exclude>.github/CODEOWNERS</exclude>
-              <exclude>{project.basedir}/src/test/java/resources/external/*</exclude>
-              <exclude>.github/workflows/*.yml</exclude>
-              <exclude>data/**</exclude>
-            </excludes>
-            <mapping>
-              <proto>JAVADOC_STYLE</proto>
-              <conf>SCRIPT_STYLE</conf>
-              <ini>SCRIPT_STYLE</ini>
-              <yaml>SCRIPT_STYLE</yaml>
-              <cfg>SCRIPT_STYLE</cfg>
-              <md>XML_STYLE</md>
-              <txt>SCRIPT_STYLE</txt>
-            </mapping>
-          </configuration>
-          <executions>
-            <execution>
-              <id>check-license-header</id>
-              <goals>
-                <goal>check</goal>
-              </goals>
-              <phase>process-sources</phase>
-            </execution>
-          </executions>
-        </plugin>
-        <!-- checkstyle -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-checkstyle-plugin</artifactId>
-          <version>${maven-checkstyle-plugin.version}</version>
-          <dependencies>
-            <dependency>
-              <groupId>com.puppycrawl.tools</groupId>
-              <artifactId>checkstyle</artifactId>
-              <version>${puppycrawl.checkstyle.version}</version>
-            </dependency>
-          </dependencies>
-          <configuration>
-            <configLocation>src/checkstyle/checkstyle.xml</configLocation>
-            <suppressionsLocation>src/checkstyle/suppressions.xml</suppressionsLocation>
-            <encoding>UTF-8</encoding>
-            <consoleOutput>true</consoleOutput>
-            <failOnViolation>true</failOnViolation>
-            <includeResources>false</includeResources>
-            <includeTestSourceDirectory>true</includeTestSourceDirectory>
-          </configuration>
-          <executions>
-            <execution>
-              <id>checkstyle</id>
-              <phase>validate</phase>
-              <goals>
-                <goal>check</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-        <!-- spotbugs -->
-        <plugin>
-          <groupId>com.github.spotbugs</groupId>
-          <artifactId>spotbugs-maven-plugin</artifactId>
-          <version>${spotbugs-maven-plugin.version}</version>
-          <configuration>
-            <excludeFilterFile>${session.executionRootDirectory}/src/spotbugs/findbugsExclude.xml</excludeFilterFile>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-
-    <plugins>
-      <!-- compile --> 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-      </plugin>
-
-      <!-- test -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-      </plugin>
-
-      <!-- package -->
-      <plugin>
-        <groupId>org.apache.nifi</groupId>
-        <artifactId>nifi-nar-maven-plugin</artifactId>
-      </plugin>
-
-      <!-- license -->
-      <plugin>
-        <groupId>com.mycila</groupId>
-        <artifactId>license-maven-plugin</artifactId>
-      </plugin>
-
-      <!-- checkstyle -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-      </plugin>
-
-      <!-- spotbugs -->
-      <plugin>
-        <groupId>com.github.spotbugs</groupId>
-        <artifactId>spotbugs-maven-plugin</artifactId>
-      </plugin>
-    </plugins>
-  </build>
-  <repositories>
-    <repository>
-      <id>central</id>
-      <layout>default</layout>
-      <url>https://repo1.maven.org/maven2</url>
-    </repository>
-    <repository>
-      <id>dataos.releases</id>
-      <name>DataOS Releases</name>
-      <url>${dataos.releases.repo}</url>
-    </repository>
-  </repositories>
-  <distributionManagement>
-    <repository>
-      <id>dataos.releases</id>
-      <url>${dataos.releases.repo}</url>
-    </repository>
-  </distributionManagement>
+            <!-- spotbugs -->
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+    <repositories>
+        <repository>
+            <id>central</id>
+            <layout>default</layout>
+            <url>https://repo1.maven.org/maven2</url>
+        </repository>
+        <repository>
+            <id>dataos.releases</id>
+            <name>DataOS Releases</name>
+            <url>${dataos.releases.repo}</url>
+        </repository>
+    </repositories>
+    <distributionManagement>
+        <repository>
+            <id>dataos.releases</id>
+            <url>${dataos.releases.repo}</url>
+        </repository>
+    </distributionManagement>
 </project>
