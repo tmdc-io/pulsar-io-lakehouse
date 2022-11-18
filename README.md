@@ -74,6 +74,11 @@ Run Individual Unit Test:
 $ mvn test -Dtest=unit-test-name (e.g: ParquetReaderTest)
 ```
 
+Publish to dataos maven repo:
+```shell
+$ mvn deploy -P cloud -s settings.xml -Dusername=abc -Dpassword=pqr -DskipTests=true
+``` 
+
 ## License
 
 Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
