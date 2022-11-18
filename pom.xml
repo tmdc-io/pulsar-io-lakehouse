@@ -53,7 +53,7 @@
     <log4j2.version>2.17.2</log4j2.version>
     <slf4j.version>1.7.25</slf4j.version>
     <hadoop.version>3.2.2</hadoop.version>
-    <iceberg.version>0.13.1</iceberg.version>
+    <iceberg.version>0.14.1</iceberg.version>
     <parquet.version>1.12.0</parquet.version>
     <hudi.version>0.11.0</hudi.version>
     <delta.version>0.3.0</delta.version>
