@@ -20,6 +20,8 @@ package org.apache.pulsar.ecosystem.io.lakehouse;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.dataos.ds.client.DepotServiceClient;
+import io.dataos.ds.spark.SparkKeyValuePropsSecretLoader;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collections;
@@ -104,6 +106,11 @@ public abstract class SinkConnectorConfig implements Serializable {
     String overrideFieldName = "";
 
     public static SinkConnectorConfig load(Map<String, Object> map) throws IOException, IncorrectParameterException {
+        // read secrets from file & update sinkConnectorConfig
+        System.out.println("SinkConnectorConfig before " + map);
+        loadSecrets(map);
+        log.info("SinkConnectorConfig is" + map);
+        System.out.println("SinkConnectorConfig after" + map);
         properties.putAll(map);
         String type = (String) map.get("type");
         if (StringUtils.isBlank(type)) {
@@ -128,7 +135,35 @@ public abstract class SinkConnectorConfig implements Serializable {
         }
     }
 
+    public static DepotServiceClient getDepotClient(){
+        DepotServiceClient client = null;
+        try {
+            String apiKey = Utils.getUserApiKey();
+            String depotServiceUrl = Utils.getDepotServiceUrl();
+            String userAgent = Utils.getUserAgent();
+            client =  new DepotServiceClient.Builder().apikey(apiKey)
+                    .url(depotServiceUrl)
+                    .userAgent(userAgent)
+                    .build();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return client;
+    }
+    public static void loadSecrets(Map<String, Object> map){
+        Map<String, String> catalogProperties = (Map<String, String>) map.get("catalogProperties");
+        if (catalogProperties.containsKey("depot")){
+            SparkKeyValuePropsSecretLoader secretLoader = new SparkKeyValuePropsSecretLoader(getDepotClient());
+            Map<String, String> secrets = secretLoader.load(catalogProperties.get("depot"), "rw");
+            secrets.forEach((key, value) -> map.put(
+                    key.toString().replaceFirst("fs", "hadoop.fs"),
+                    value.toString()));
+            catalogProperties.remove("depot");
+        }
+    }
+
     public static ObjectMapper jsonMapper() {
+        log.info("Utils.JSON_MAPPER is" + Utils.JSON_MAPPER.get().toString());
         return Utils.JSON_MAPPER.get();
     }
 

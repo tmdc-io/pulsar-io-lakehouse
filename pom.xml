@@ -32,7 +32,7 @@
 
   <groupId>org.apache.pulsar.ecosystem</groupId>
   <artifactId>pulsar-io-lakehouse</artifactId>
-  <version>2.11.0-dataos.1</version>
+  <version>2.10.2.4-dataos.8</version>
   <name>Pulsar Ecosystem :: IO Connector :: Lake House</name>
   <description>It is a lakehouse connector streaming convert data between lakehouse and Apache Pulsar.</description>
 
@@ -48,22 +48,22 @@
     <testRetryCount>0</testRetryCount>
 
     <!-- connector dependencies -->
-    <jackson.version>2.13.2.1</jackson.version>
+    <jackson.version>2.14.0</jackson.version>
     <lombok.version>1.18.22</lombok.version>
-    <pulsar.version>2.10.0.4</pulsar.version>
+    <pulsar.version>2.10.2.4</pulsar.version>
     <log4j2.version>2.17.2</log4j2.version>
     <slf4j.version>1.7.25</slf4j.version>
-    <hadoop.version>3.2.2</hadoop.version>
+    <hadoop.version>3.2.4</hadoop.version>
     <iceberg.version>0.14.1</iceberg.version>
     <parquet.version>1.12.0</parquet.version>
-    <hudi.version>0.11.0</hudi.version>
+    <hudi.version>0.12.2</hudi.version>
     <delta.version>0.3.0</delta.version>
     <parquet.avro.version>1.12.2</parquet.avro.version>
     <netty.version>4.1.77.Final</netty.version>
     <aws.sdk.version>1.12.220</aws.sdk.version>
     <gcs.version>hadoop3-2.2.1</gcs.version>
     <curator.version>2.12.0</curator.version>
-
+    <depot.service>0.1.4-dev</depot.service>
     <!-- test dependencies -->
     <testng.version>7.3.0</testng.version>
     <awaitility.version>4.0.3</awaitility.version>
@@ -78,6 +78,7 @@
     <puppycrawl.checkstyle.version>8.37</puppycrawl.checkstyle.version>
     <spotbugs-maven-plugin.version>4.2.2</spotbugs-maven-plugin.version>
     <cloudPkgSuffix></cloudPkgSuffix>
+    <test.additional.args />
   </properties>
 
   <licenses>
@@ -92,6 +93,17 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
+        <groupId>io.dataos.sdk</groupId>
+        <artifactId>depot-service</artifactId>
+        <version>${depot.service}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
         <groupId>io.streamnative</groupId>
         <artifactId>pulsar-io-core</artifactId>
         <version>${pulsar.version}</version>
@@ -99,6 +111,16 @@
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-databind</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.module</groupId>
+        <artifactId>jackson-module-paranamer</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.module</groupId>
+        <artifactId>jackson-module-scala_2.12</artifactId>
         <version>${jackson.version}</version>
       </dependency>
       <dependency>
@@ -121,12 +143,67 @@
         <groupId>org.apache.hadoop</groupId>
         <artifactId>hadoop-client</artifactId>
         <version>${hadoop.version}</version>
+        <exclusions>
+          <exclusion>
+            <artifactId>commons-logging</artifactId>
+            <groupId>commons-logging</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>log4j</artifactId>
+            <groupId>log4j</groupId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-yarn-*</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-mapreduce-*</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>*</artifactId>
+          </exclusion>
+          <exclusion>
+            <artifactId>jetty-servlet</artifactId>
+            <groupId>org.eclipse.jetty</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>jetty-util</artifactId>
+            <groupId>org.eclipse.jetty</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>jetty-webapp</artifactId>
+            <groupId>org.eclipse.jetty</groupId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>io.netty</groupId>
         <artifactId>netty-common</artifactId>
         <version>${netty.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-api</artifactId>
+        <version>${log4j2.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-core</artifactId>
+        <version>${log4j2.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-1.2-api</artifactId>
+        <version>${log4j2.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-slf4j-impl</artifactId>
+        <version>${log4j2.version}</version>
+      </dependency>
+
 
       <!-- iceberg dependency -->
       <dependency>
@@ -194,22 +271,18 @@
         <artifactId>slf4j-simple</artifactId>
         <version>${slf4j.version}</version>
       </dependency>
-      <dependency>
-        <groupId>org.apache.logging.log4j</groupId>
-        <artifactId>log4j-slf4j-impl</artifactId>
-        <version>${log4j2.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.logging.log4j</groupId>
-        <artifactId>log4j-core</artifactId>
-        <version>${log4j2.version}</version>
-      </dependency>
 
       <!--  Hoodie dependencies begin   -->
       <dependency>
         <groupId>org.apache.hudi</groupId>
         <artifactId>hudi-java-client</artifactId>
         <version>${hudi.version}</version>
+        <exclusions>
+          <exclusion>
+            <artifactId>log4j</artifactId>
+            <groupId>log4j</groupId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <!--  Hoodie dependencies end    -->
 
@@ -242,6 +315,16 @@
         <groupId>org.apache.hadoop</groupId>
         <artifactId>hadoop-azure</artifactId>
         <version>${hadoop.version}</version>
+        <exclusions>
+          <exclusion>
+            <artifactId>jetty-util</artifactId>
+            <groupId>org.eclipse.jetty</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>jetty-util-ajax</artifactId>
+            <groupId>org.eclipse.jetty</groupId>
+          </exclusion>
+        </exclusions>
       </dependency>
 
       <!-- Cloud dependencies end -->
@@ -281,6 +364,21 @@
 
     <!-- provided dependencies (available at compilation and test classpaths and *NOT* packaged) -->
     <dependency>
+    <groupId>com.fasterxml.jackson.module</groupId>
+    <artifactId>jackson-module-paranamer</artifactId>
+    </dependency>
+
+    <dependency>
+    <groupId>com.fasterxml.jackson.module</groupId>
+    <artifactId>jackson-module-scala_2.12</artifactId>
+    </dependency>
+
+    <dependency>
+    <groupId>io.dataos.sdk</groupId>
+    <artifactId>depot-service</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <scope>provided</scope>
@@ -309,28 +407,6 @@
     <dependency>
       <groupId>org.apache.hadoop</groupId>
       <artifactId>hadoop-client</artifactId>
-      <exclusions>
-        <exclusion>
-          <artifactId>commons-logging</artifactId>
-          <groupId>commons-logging</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>log4j</artifactId>
-          <groupId>log4j</groupId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.hadoop</groupId>
-          <artifactId>hadoop-yarn-*</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.hadoop</groupId>
-          <artifactId>hadoop-mapreduce-*</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>com.sun.jersey</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
 
     <dependency>
@@ -396,7 +472,19 @@
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-1.2-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j-impl</artifactId>
     </dependency>
 
     <dependency>
@@ -427,6 +515,12 @@
       <groupId>org.apache.curator</groupId>
       <artifactId>curator-framework</artifactId>
       <version>${curator.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>log4j</artifactId>
+          <groupId>log4j</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
@@ -435,6 +529,12 @@
       <version>${hudi.version}</version>
       <scope>test</scope>
       <classifier>tests</classifier>
+      <exclusions>
+        <exclusion>
+          <artifactId>log4j</artifactId>
+          <groupId>log4j</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <!-- test dependencies -->
@@ -453,7 +553,6 @@
       <artifactId>mockito-core</artifactId>
       <scope>test</scope>
     </dependency>
-
   </dependencies>
   <profiles>
     <profile>
@@ -491,6 +590,36 @@
         </dependency>
       </dependencies>
     </profile>
+    <profile>
+      <id>jdk11</id>
+      <activation>
+        <jdk>[11,)</jdk>
+      </activation>
+      <properties>
+        <maven.compiler.release>${maven.compiler.target}</maven.compiler.release>
+        <test.additional.args>
+          --add-opens java.base/java.io=ALL-UNNAMED
+          --add-opens java.base/java.lang=ALL-UNNAMED
+          --add-opens java.base/java.lang.reflect=ALL-UNNAMED
+          --add-opens java.base/java.lang.invoke=ALL-UNNAMED
+          --add-opens java.base/java.net=ALL-UNNAMED
+          --add-opens java.base/java.nio=ALL-UNNAMED
+          --add-opens java.base/java.nio.channels.spi=ALL-UNNAMED
+          --add-opens java.base/java.nio.file=ALL-UNNAMED
+          --add-opens java.base/java.util=ALL-UNNAMED
+          --add-opens java.base/java.util.concurrent=ALL-UNNAMED
+          --add-opens java.base/java.util.concurrent.atomic=ALL-UNNAMED
+          --add-opens java.base/java.util.stream=ALL-UNNAMED
+          --add-opens java.base/java.util.zip=ALL-UNNAMED
+          --add-opens java.base/java.time=ALL-UNNAMED
+          --add-opens java.base/jdk.internal.loader=ALL-UNNAMED
+          --add-opens java.base/sun.net.dns=ALL-UNNAMED
+          --add-opens java.base/sun.nio.ch=ALL-UNNAMED
+          --add-opens java.base/sun.security.jca=ALL-UNNAMED
+          --add-opens java.xml/jdk.xml.internal=ALL-UNNAMED
+        </test.additional.args>
+      </properties>
+    </profile>
   </profiles>
   <build>
     <finalName>${project.artifactId}-${project.version}${cloudPkgSuffix}</finalName>
@@ -519,12 +648,7 @@
             <reuseForks>false</reuseForks>
             <forkedProcessTimeoutInSeconds>1800</forkedProcessTimeoutInSeconds>
             <rerunFailingTestsCount>${testRetryCount}</rerunFailingTestsCount>
-            <argLine>
-              --add-opens java.base/java.util=ALL-UNNAMED
-              --add-opens java.base/java.lang=ALL-UNNAMED
-              --add-opens java.base/java.util.concurrent=ALL-UNNAMED
-              --add-opens java.base/java.nio=ALL-UNNAMED
-            </argLine>
+            <argLine> -Xmx2G ${test.additional.args}</argLine>
           </configuration>
         </plugin>
         <!-- package -->

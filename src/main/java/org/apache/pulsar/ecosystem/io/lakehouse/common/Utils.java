@@ -30,9 +30,28 @@ import org.apache.pulsar.ecosystem.io.lakehouse.SinkConnectorConfig;
 @Slf4j
 public class Utils {
     private static final String HADOOP_CONF_PREFIX = "hadoop.";
-
+    private static final String DEPOT_SERVICE_URL = "DEPOT_SERVICE_URL";
+    private static final String DATAOS_RUN_AS_APIKEY = "DATAOS_RUN_AS_APIKEY";
+    private static final String DATAOS_RUN_AS_USER_AGENT = "DATAOS_RUN_AS_USER_AGENT";
     public static Configuration getDefaultHadoopConf(SinkConnectorConfig configs) {
         return getDefaultHadoopConf(configs.getProperties());
+    }
+
+    public static String getDepotServiceUrl() {
+        String depotServiceUrl = System.getenv(DEPOT_SERVICE_URL);
+        return depotServiceUrl != null ? depotServiceUrl.replaceAll("/+$", "") : "http://localhost:8000";
+    }
+    public static String getUserAgent() {
+        String userAgent = System.getenv(DATAOS_RUN_AS_USER_AGENT);
+        return userAgent != null ? userAgent : "pulsar-io-lakehouse";
+    }
+    public static String getUserApiKey() {
+        String apiKey = System.getenv(DATAOS_RUN_AS_APIKEY);
+        if (apiKey != null) {
+            return apiKey;
+        } else {
+            throw new RuntimeException("Fatal! Environment variable " + DATAOS_RUN_AS_APIKEY + " not provided.");
+        }
     }
 
     public static Configuration getDefaultHadoopConf(Properties properties) {

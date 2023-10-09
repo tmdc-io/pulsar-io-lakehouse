@@ -77,6 +77,7 @@ public class IcebergSinkConnectorTest {
         config.put("catalogName", "test-pulsar-catalog");
         Map<String, String> catalogProp = new HashMap<>();
         catalogProp.put(CatalogProperties.WAREHOUSE_LOCATION, tablePath);
+        catalogProp.put("depot", "icebase");
         config.put("catalogProperties", catalogProp);
         config.put("type", "iceberg");
 
