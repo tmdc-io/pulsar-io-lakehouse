@@ -53,13 +53,13 @@ Requirements:
 Compile and install without cloud dependency:
 
 ```bash
-$ mvn clean install -DskipTests
+$ mvn clean package -DskipTests
 ```
 
 Compile and install with cloud dependency (Including `aws`, `gcs` and `azure`):
 
 ```bash
-$ mvn clean install -P cloud -DskipTests
+$ mvn clean package -P cloud -DskipTests
 ```
 
 Run Unit Tests:
